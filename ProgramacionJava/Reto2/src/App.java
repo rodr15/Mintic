@@ -38,8 +38,18 @@ class BaseDatosProductos {
      * 9 Chocolates 3500.0 80
      * 10 Jamon 15000.0 10
      */
+
     Map<Integer, Producto> listaProductos = new HashMap<Integer, Producto>();
     double totalInventario = 0;
+
+    // * Variables para en informe
+    String nombreProductoMayor;
+    String nombreProductoMenor;
+
+    double precioProductoMayor = 0;
+    double precioProductoMenor = 0;
+    double promedioPrecios = 0;
+
     BaseDatosProductos() {
         listaProductos.put(1, new Producto(1, "Manzanas", 5000.0, 25));
         listaProductos.put(2, new Producto(2, "Limones", 2300.0, 15));
@@ -75,14 +85,37 @@ class BaseDatosProductos {
     }
 
     void generarInforme() {
-        for(Producto producto : listaProductos.values()){
+        // * El nombre del producto con el precio mayor
+        // * El nombre del producto con el precio menor
+        // * El promedio de los precios de los productos
+
+        for (Producto producto : listaProductos.values()) {
+
+            // * Calculo del total del inventario */
             totalInventario += producto.precio * producto.inventario;
+            //* Calculo del promedio de precios */
+            promedioPrecios += producto.precio;
+            if (producto.precio > precioProductoMayor) {
+                precioProductoMayor = producto.precio;
+                nombreProductoMayor = producto.nombre;
+            }
+
         }
-        System.out.println(totalInventario);
+        precioProductoMenor = precioProductoMayor;
+        for (Producto producto : listaProductos.values()) {
+            if (producto.precio < precioProductoMenor) {
+                precioProductoMenor = producto.precio;
+                nombreProductoMenor = producto.nombre;
+            }
+        }
+
+        // * Calculo del promedio de precios */
+        promedioPrecios = promedioPrecios / listaProductos.size();
+        System.out.println(nombreProductoMayor + " " + nombreProductoMenor + " " + String.format("%.1f", promedioPrecios));
     }
 }
 
-class Reto2 {
+class Reto3 {
 
     /**
      * Este debe ser el único objeto de tipo Scanner en el código
@@ -166,7 +199,7 @@ class Reto2 {
     }
 
     public static void main(String[] args) throws Exception {
-        Reto2 objeto = new Reto2();
+        Reto3 objeto = new Reto3();
         objeto.run();
     }
 }
